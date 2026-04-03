@@ -64,6 +64,11 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                             text = "Count: ${item.count}",
                             color = Color.White
                         )
+                        Text (
+                            text = "Time: ${item.timestamp}",
+                            color = Color.White
+
+                        )
                     }
                 }
             }

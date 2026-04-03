@@ -34,13 +34,13 @@ Java_com_sandeep_countincrementthroughc_nativeLib_NativeBridge_incrementCount(
 
     std::thread([]() {
 
-        counter++;
+        int value = ++counter;
 
         std::this_thread::sleep_for(std::chrono::seconds(2));
 
         JNIEnv* env;
         gJvm->AttachCurrentThread(&env, nullptr);
-        env->CallStaticVoidMethod(gClass, gMethod, counter);
+        env->CallStaticVoidMethod(gClass, gMethod, value);
         gJvm->DetachCurrentThread();
 
     }).detach();
