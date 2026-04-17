@@ -1,4 +1,4 @@
-package com.sandeep.countincrementthroughc.model
+package com.sandeep.countincrementthroughc.data.model
 
 data class Counter(
     val count: Int = 0,
