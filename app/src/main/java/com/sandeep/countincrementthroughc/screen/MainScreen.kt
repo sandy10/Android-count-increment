@@ -22,6 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sandeep.countincrementthroughc.viewmodel.MainViewModel
 
+/**
+ * Main UI screen displaying:
+ * - Increment button
+ * - List of counter updates
+ *
+ * @param viewModel ViewModel providing UI state
+ */
 @Composable
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
 
@@ -31,6 +38,9 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
         modifier = Modifier.fillMaxSize().statusBarsPadding().padding(16.dp)
     ) {
 
+        /**
+         * Button to trigger counter increment.
+         */
         Button(
             onClick = { viewModel.onButtonClick() },
             modifier = Modifier.padding(20.dp).align(Alignment.CenterHorizontally),
@@ -42,6 +52,9 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             Text("Click Me")
         }
 
+        /**
+         * show this message when items is empty
+         */
         if (items.isEmpty()) {
             Text(
                 text = "Click the button to add count.",
@@ -49,6 +62,9 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             )
         }
 
+        /**
+         * List displaying counter updates.
+         */
         LazyColumn(
             modifier = Modifier.fillMaxWidth()
         ) {

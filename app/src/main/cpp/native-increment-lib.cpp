@@ -1,4 +1,13 @@
 
+/**
+ * Native library implementing asynchronous counter increment logic.
+ *
+ * Features:
+ * - Thread-safe counter using std::atomic
+ * - Single worker thread for processing tasks
+ * - JNI callback to Kotlin layer
+ */
+
 #include <jni.h>
 #include <thread>
 #include <chrono>
@@ -10,18 +19,26 @@
 
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, "NativeLib", __VA_ARGS__)
 
+// Global JVM reference
 JavaVM* gJvm = nullptr;
+
+// Cached class and method references
 jclass gClass = nullptr;
 jmethodID gMethod = nullptr;
 
+// Thread-safe counter
 std::atomic<int> counter(0);
-std::mutex initMutex;
 
+// Synchronization primitives
+std::mutex initMutex;
 std::queue<int> taskQueue;
 std::mutex queueMutex;
 std::condition_variable cv;
 
 
+/**
+ * Worker thread that processes queued tasks and sends results to Kotlin.
+ */
 void worker() {
     while (true) {
         std::unique_lock<std::mutex> lock(queueMutex);
@@ -44,6 +61,9 @@ void worker() {
     }
 }
 
+/**
+ * Called when native library is loaded.
+ */
 jint JNI_OnLoad(JavaVM* vm, void*) {
     gJvm = vm;
     std::thread(worker).detach(); // single worker

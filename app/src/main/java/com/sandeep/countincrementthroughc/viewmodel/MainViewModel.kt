@@ -13,6 +13,14 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+ * ViewModel for MainScreen.
+ *
+ * Responsibilities:
+ * - Observes data from Repository
+ * - Transforms data into UI-friendly format
+ * - Handles user actions
+ */
 class MainViewModel(
     private val repository: CounterRepository = CounterRepository()
 ) : ViewModel() {
@@ -24,6 +32,9 @@ class MainViewModel(
         observeCounter()
     }
 
+    /**
+     * Collects counter updates from repository and updates UI state.
+     */
     private fun observeCounter() {
         viewModelScope.launch {
             repository.counterFlow.collect { count ->
@@ -36,6 +47,10 @@ class MainViewModel(
         }
     }
 
+    /**
+     * Handles button click event from UI.
+     * Applies timeout to avoid indefinite waiting.
+     */
     fun onButtonClick() {
         viewModelScope.launch {
             withTimeoutOrNull(3000) {
@@ -44,6 +59,9 @@ class MainViewModel(
         }
     }
 
+    /**
+     * Cleans up resources when ViewModel is destroyed.
+     */
     override fun onCleared() {
         super.onCleared()
         repository.cleanup()
