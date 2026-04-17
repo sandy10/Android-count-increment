@@ -7,3 +7,10 @@ add_library(
         SHARED
         native-increment-lib.cpp
 )
+
+find_library(log-lib log)
+
+target_link_libraries(
+        native-increment-lib
+        ${log-lib}
+)
