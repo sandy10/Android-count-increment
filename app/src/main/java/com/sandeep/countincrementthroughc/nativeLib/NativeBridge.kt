@@ -1,17 +1,29 @@
 package com.sandeep.countincrementthroughc.nativeLib
 
+import android.util.Log
+
 object NativeBridge {
 
     init {
-        System.loadLibrary("native-increment-lib")
+        try {
+            System.loadLibrary("native-increment-lib")
+        } catch (e: UnsatisfiedLinkError) {
+            e.printStackTrace()
+        }
+    }
+
+    private var callback: ((Int) -> Unit)? = null
+
+    fun setCallback(cb: (Int) -> Unit) {
+        callback = cb
     }
 
     external fun incrementCount()
-
-    var onResult: ((Int) -> Unit)? = null
+    external fun cleanup()
 
     @JvmStatic
     fun onNativeResult(count: Int) {
-        onResult?.invoke(count)
+        Log.d("sandeep", "Native result: $count")
+        callback?.invoke(count)
     }
 }
